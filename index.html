@@ -34,27 +34,57 @@
       width: 100%;
       flex: 0 0  auto;
       transition: transform 0.7s ease-in-out;
+      overflow: hidden;
       position: relative;
     }
     .slide.even {
       background-color: black;
       color:white;
     }
+    .slide.even img {
+      opacity: 0.8;
+    }
     .slide.odd {
       background-color: white;
       color: black;
     }
+    .slide figure {
+      margin: 0;
+      padding: 0;
+      height: 500px;
+    }
     .slide img {
-      width: 100%;
+      height: 100%;
     }
     .slide p {
+      padding: 20px 0;
       position: absolute;
-      bottom: 0;
+      bottom: -20px;
+      text-shadow: 0px 0px 10px #000000;
+      color: white !important;
+      background: linear-gradient(0deg, #000 0%, rgba(0, 0, 0, 0.62) 0%, rgba(0, 0, 0, 0.24) 78%);
     }
     .slide .different {
       position: absolute;
-      top: 200px;
+      top: 400px;
       text-align: center;
+    }
+    [data-position="5"] img, [data-position="7"] img, [data-position="9"] img{
+      height: auto;
+      width: 100%;
+    }
+    [data-position="7"] h1 {
+      color: white;
+    }
+    #nextbtn {
+      display: block;
+      background-color: rgba(0, 0, 0, 0);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -63,48 +93,46 @@
     <div class="slider-container slider-transition">
       <div class="slide odd" data-position="1">
         <h1>Gracias, mi amor</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-1.jpeg" alt=""></figure>
         <p style="text-align:center">Porque siempre estás, porque nunca te rindes, porque sin importar cuán difícil luzca el panorama, sonríes y estás dispuesta a seguir...</p>
       </div>
       <div class="slide even" data-position="2">
         <h1>Mi mayor regalo eres tú</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-2.jpeg" alt=""></figure>
         <p style="text-align:center">Contigo puedo ser yo y me gusta que te sientas cómoda conmigo y seas tú; nuestro amor es muy tranquilo, maduro y siento que todo lo que nos suceda lo podemos hablar y resolverlo juntos.</p>
       </div>
       <div class="slide odd" data-position="3">
         <h1>El futuro es nuestro</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-3.jpeg" alt=""></figure>
         <p style="text-align:center">Hemos atravesado por momentos muy difíciles, pero seguimos vivos, juntos y llenos de magia, fuerza y ganas. No nos vamos a dejar vencer.</p>
       </div>
       <div class="slide even" data-position="4">
         <h1 class="different">Y para llamar a las buenas cosas, tengo un regalo para ti</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-4.jpeg" alt=""></figure>
       </div>
       <div class="slide odd" data-position="5">
-        <h1>&nbsp;</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-5.webp" alt=""></figure>
         <p style="text-align:center">Con ella recorrerás muchos caminos, aprenderás y sentirás el mundo a tus pies, paso a paso, milla a milla.</p>
       </div>
       <div class="slide even" data-position="6">
         <h1 class="different">Espero que te guste mucho y que puedas usarla muchas veces</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-4.jpeg" alt=""></figure>
       </div>
       <div class="slide odd" data-position="7">
         <h1 class="different">Te amo Geraldine</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-6.jpeg" alt=""></figure>
       </div>
       <div class="slide even" data-position="8">
         <h1 class="different">Ah, una cosa más</h1>
-        <img src="https://place-hold.it/300x500" alt="">
+        <figure><img src="./img/slide-4.jpeg" alt=""></figure>
       </div>
       <div class="slide odd" data-position="9">
-        <h1>&nbsp;</h1>
-        <img src="https://place-hold.it/300x500" alt="">
-        <p style="text-align:center">Te invito a estrenarla conmigo...</p>
+        <h1 class="different">Te invito a estrenarla conmigo</h1>
+        <figure><img src="./img/slide-book.jpeg" alt=""></figure>
       </div>
     </div>
   </div>
-  <span><a id='nextbtn' href="#">Next</a></span>
+  <span><a id='nextbtn' href="#">&nbsp;</a></span>
   <script>
     const FlexSlider = {
       items: document.querySelectorAll('.slide').length,
@@ -123,14 +151,15 @@
         document.querySelector('.slider-container').addEventListener('transitionend', () => {this.changeOrder();});
       },
       changeOrder: function() {
-        if(this.current == this.num_items)
+        if(this.current == this.items) {
           this.current = 1;
+        }
         else
           this.current++;
 
         let order = 1;
 
-        for(let i = this.current; i <= this.num_items; i++) {
+        for(let i = this.current; i <= this.items; i++) {
           document.querySelector(".slide[data-position='" + i + "']").style.order = order;
           order++;
         }
@@ -145,6 +174,8 @@
       },
 
       gotoNext: function() {
+        if(this.current == this.items-1)
+          document.querySelector('#nextbtn').remove()
         document.querySelector('.slider-container').classList.add('slider-transition');
         document.querySelector('.slider-container').style.transform = 'translateX(-100%)';
       }
